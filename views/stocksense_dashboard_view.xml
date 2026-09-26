@@ -1,0 +1,108 @@
+<odoo>
+<data>
+<!--  Dashboard Main Form  -->
+<record id="dashboard_main" model="ir.ui.view">
+<field name="name">StockSense Dashboard</field>
+<field name="model">stock.warehouse</field>
+<field name="priority">99</field>
+<field name="arch" type="xml">
+<form string="Inventory Dashboard">
+<sheet>
+<div class="oe_dashboard">
+<h1>Inventory Management Dashboard</h1>
+<div class="row mt32">
+<div class="col-md-3">
+<div class="o_stat_button">
+<a type="action" name="%(action_product_template)d" class="oe_stat_button" icon="fa-cubes">
+<span class="o_stat_text">Products</span>
+<span class="o_stat_value">--</span>
+</a>
+</div>
+</div>
+<div class="col-md-3">
+<div class="o_stat_button">
+<a type="action" name="%(action_receipt)d" class="oe_stat_button" icon="fa-arrow-circle-down">
+<span class="o_stat_text">Low Stock</span>
+<span class="o_stat_value">--</span>
+</a>
+</div>
+</div>
+<div class="col-md-3">
+<div class="o_stat_button">
+<a type="action" name="%(action_receipt)d" class="oe_stat_button" icon="fa-arrow-circle-up">
+<span class="o_stat_text">Out of Stock</span>
+<span class="o_stat_value">--</span>
+</a>
+</div>
+</div>
+<div class="col-md-3">
+<div class="o_stat_button">
+<a type="action" name="%(action_receipt)d" class="oe_stat_button" icon="fa-hourglass-start">
+<span class="o_stat_text">Pending Receipts</span>
+<span class="o_stat_value">--</span>
+</a>
+</div>
+</div>
+</div>
+<div class="row mt32">
+<div class="col-md-3">
+<div class="o_stat_button">
+<a type="action" name="%(action_delivery)d" class="oe_stat_button" icon="fa-truck">
+<span class="o_stat_text">Pending Deliveries</span>
+<span class="o_stat_value">--</span>
+</a>
+</div>
+</div>
+<div class="col-md-3">
+<div class="o_stat_button">
+<a type="action" name="%(action_transfer)d" class="oe_stat_button" icon="fa-exchange">
+<span class="o_stat_text">Pending Transfers</span>
+<span class="o_stat_value">--</span>
+</a>
+</div>
+</div>
+<div class="col-md-3">
+<div class="o_stat_button">
+<a type="action" name="%(action_ledger)d" class="oe_stat_button" icon="fa-book">
+<span class="o_stat_text">Stock Ledger</span>
+<span class="o_stat_value">--</span>
+</a>
+</div>
+</div>
+<div class="col-md-3">
+<div class="o_stat_button">
+<a type="action" name="%(action_adjustment)d" class="oe_stat_button" icon="fa-refresh">
+<span class="o_stat_text">Adjustments</span>
+<span class="o_stat_value">--</span>
+</a>
+</div>
+</div>
+</div>
+<div class="row mt32">
+<div class="col-md-12">
+<h3>Quick Actions</h3>
+<button type="action" name="%(action_new_receipt)d" class="btn btn-primary btn-sm">
+<i class="fa fa-plus"/>
+New Receipt
+</button>
+<button type="action" name="%(action_new_delivery)d" class="btn btn-primary btn-sm">
+<i class="fa fa-plus"/>
+New Delivery
+</button>
+<button type="action" name="%(action_new_transfer)d" class="btn btn-primary btn-sm">
+<i class="fa fa-plus"/>
+New Transfer
+</button>
+<button type="action" name="%(action_new_adjustment)d" class="btn btn-primary btn-sm">
+<i class="fa fa-plus"/>
+New Adjustment
+</button>
+</div>
+</div>
+</div>
+</sheet>
+</form>
+</field>
+</record>
+</data>
+</odoo>

@@ -1,0 +1,132 @@
+<odoo>
+<data>
+<!--  Adjustment Form View  -->
+<record id="adjustment_form" model="ir.ui.view">
+<field name="name">Adjustment Form</field>
+<field name="model">stocksense.adjustment</field>
+<field name="arch" type="xml">
+<form string="Stock Adjustment">
+<header>
+<button name="action_review" string="Review" type="object" class="oe_highlight" states="draft"/>
+<button name="action_done" string="Validate" type="object" class="oe_highlight" states="reviewed"/>
+<button name="action_cancel" string="Cancel" type="object" states="draft,reviewed"/>
+<button name="action_reset" string="Reset to Draft" type="object" states="canceled"/>
+<field name="state" widget="statusbar" statusbar_visible="draft,reviewed,done"/>
+</header>
+<sheet>
+<div class="oe_title">
+<h1>
+<field name="name" readonly="1"/>
+</h1>
+</div>
+<group>
+<group>
+<field name="adjustment_date"/>
+<field name="warehouse_id"/>
+<field name="location_id"/>
+</group>
+<group>
+<field name="reason"/>
+<field name="user_id" readonly="1"/>
+<field name="reviewed_by" readonly="1"/>
+</group>
+</group>
+<group>
+<field name="total_variance" readonly="1" widget="badge"/>
+</group>
+<notebook>
+<page string="Adjustment Lines">
+<field name="adjustment_line_ids" mode="tree,form">
+<tree>
+<field name="product_id"/>
+<field name="recorded_qty"/>
+<field name="physical_qty"/>
+<field name="quantity_variance" widget="badge"/>
+</tree>
+<form>
+<group>
+<field name="product_id"/>
+<group>
+<field name="recorded_qty" string="Recorded Qty"/>
+<field name="physical_qty" string="Counted Qty"/>
+<field name="quantity_variance" readonly="1" string="Variance"/>
+</group>
+<field name="uom_id"/>
+<field name="notes" placeholder="Notes..."/>
+</group>
+</form>
+</field>
+</page>
+<page string="Notes">
+<field name="notes" placeholder="Adjustment notes and remarks..."/>
+</page>
+</notebook>
+</sheet>
+</form>
+</field>
+</record>
+<!--  Adjustment Tree View  -->
+<record id="adjustment_tree" model="ir.ui.view">
+<field name="name">Adjustment Tree</field>
+<field name="model">stocksense.adjustment</field>
+<field name="arch" type="xml">
+<tree string="Stock Adjustments">
+<field name="name"/>
+<field name="adjustment_date"/>
+<field name="warehouse_id"/>
+<field name="location_id"/>
+<field name="reason"/>
+<field name="total_variance" widget="badge"/>
+<field name="state" widget="badge"/>
+</tree>
+</field>
+</record>
+<!--  Adjustment Search View  -->
+<record id="adjustment_search" model="ir.ui.view">
+<field name="name">Adjustment Search</field>
+<field name="model">stocksense.adjustment</field>
+<field name="arch" type="xml">
+<search string="Stock Adjustments">
+<field name="name" string="Adjustment Number"/>
+<field name="warehouse_id"/>
+<field name="location_id"/>
+<separator/>
+<filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+<filter string="Reviewed" name="reviewed" domain="[('state', '=', 'reviewed')]"/>
+<filter string="Done" name="done" domain="[('state', '=', 'done')]"/>
+<filter string="Canceled" name="canceled" domain="[('state', '=', 'canceled')]"/>
+<separator/>
+<filter string="Damage" name="damage" domain="[('reason', '=', 'damage')]"/>
+<filter string="Loss/Theft" name="loss" domain="[('reason', '=', 'loss')]"/>
+<filter string="Count Variance" name="variance" domain="[('reason', '=', 'count_variance')]"/>
+<separator/>
+<filter string="Today" name="today" domain="[('adjustment_date', '>=', context_today().strftime('%Y-%m-%d')), ('adjustment_date', '<', (context_today() + timedelta(days=1)).strftime('%Y-%m-%d'))]"/>
+<group expand="0" string="Group By">
+<filter string="State" name="state" context="{'group_by': 'state'}"/>
+<filter string="Reason" name="reason" context="{'group_by': 'reason'}"/>
+<filter string="Warehouse" name="warehouse" context="{'group_by': 'warehouse_id'}"/>
+</group>
+</search>
+</field>
+</record>
+<!--  Adjustment Line Form  -->
+<record id="adjustment_line_form" model="ir.ui.view">
+<field name="name">Adjustment Line Form</field>
+<field name="model">stocksense.adjustment.line</field>
+<field name="arch" type="xml">
+<form string="Adjustment Line">
+<group>
+<field name="product_id"/>
+<group>
+<field name="recorded_qty"/>
+<field name="physical_qty"/>
+<field name="quantity_variance" readonly="1"/>
+</group>
+<field name="uom_id"/>
+<field name="notes" placeholder="Notes..."/>
+</group>
+</form>
+</field>
+</record>
+</data>
+</odoo>

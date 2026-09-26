@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Security Groups -->
+        <record id="group_inventory_manager" model="res.groups">
+            <field name="name">Inventory Manager</field>
+            <field name="comment">User can manage all inventory operations</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="group_warehouse_staff" model="res.groups">
+            <field name="name">Warehouse Staff</field>
+            <field name="comment">User can perform warehouse operations</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!-- Record Rules for Inventory Manager -->
+        <!-- Inventory Managers can see all documents -->
+        <record id="rule_receipt_manager_all" model="ir.rule">
+            <field name="name">Receipt - Manager - All</field>
+            <field name="model_id" ref="model_stocksense_receipt"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_inventory_manager'))]"/>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">1</field>
+            <field name="perm_unlink">1</field>
+        </record>
+
+        <record id="rule_delivery_manager_all" model="ir.rule">
+            <field name="name">Delivery - Manager - All</field>
+            <field name="model_id" ref="model_stocksense_delivery"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_inventory_manager'))]"/>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">1</field>
+            <field name="perm_unlink">1</field>
+        </record>
+
+        <record id="rule_transfer_manager_all" model="ir.rule">
+            <field name="name">Transfer - Manager - All</field>
+            <field name="model_id" ref="model_stocksense_transfer"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_inventory_manager'))]"/>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">1</field>
+            <field name="perm_unlink">1</field>
+        </record>
+
+        <record id="rule_adjustment_manager_all" model="ir.rule">
+            <field name="name">Adjustment - Manager - All</field>
+            <field name="model_id" ref="model_stocksense_adjustment"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_inventory_manager'))]"/>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">1</field>
+            <field name="perm_unlink">1</field>
+        </record>
+
+        <record id="rule_ledger_manager_all" model="ir.rule">
+            <field name="name">Ledger - Manager - All</field>
+            <field name="model_id" ref="model_stocksense_ledger"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_inventory_manager'))]"/>
+            <field name="perm_read">1</field>
+            <field name="perm_write">0</field>
+            <field name="perm_create">0</field>
+            <field name="perm_unlink">0</field>
+        </record>
+
+        <!-- Record Rules for Warehouse Staff -->
+        <!-- Warehouse Staff can view receipts and deliveries -->
+        <record id="rule_receipt_staff_read" model="ir.rule">
+            <field name="name">Receipt - Staff - Read Only</field>
+            <field name="model_id" ref="model_stocksense_receipt"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_warehouse_staff'))]"/>
+            <field name="perm_read">1</field>
+            <field name="perm_write">0</field>
+            <field name="perm_create">0</field>
+            <field name="perm_unlink">0</field>
+        </record>
+
+        <record id="rule_delivery_staff_read" model="ir.rule">
+            <field name="name">Delivery - Staff - Read Only</field>
+            <field name="model_id" ref="model_stocksense_delivery"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_warehouse_staff'))]"/>
+            <field name="perm_read">1</field>
+            <field name="perm_write">0</field>
+            <field name="perm_create">0</field>
+            <field name="perm_unlink">0</field>
+        </record>
+
+        <record id="rule_transfer_staff_manage" model="ir.rule">
+            <field name="name">Transfer - Staff - Manage</field>
+            <field name="model_id" ref="model_stocksense_transfer"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_warehouse_staff'))]"/>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">1</field>
+            <field name="perm_unlink">0</field>
+        </record>
+
+        <record id="rule_adjustment_staff_manage" model="ir.rule">
+            <field name="name">Adjustment - Staff - Manage</field>
+            <field name="model_id" ref="model_stocksense_adjustment"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_warehouse_staff'))]"/>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">1</field>
+            <field name="perm_unlink">0</field>
+        </record>
+
+        <record id="rule_ledger_staff_read" model="ir.rule">
+            <field name="name">Ledger - Staff - Read Only</field>
+            <field name="model_id" ref="model_stocksense_ledger"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_warehouse_staff'))]"/>
+            <field name="perm_read">1</field>
+            <field name="perm_write">0</field>
+            <field name="perm_create">0</field>
+            <field name="perm_unlink">0</field>
+        </record>
+
+    </data>
+</odoo>

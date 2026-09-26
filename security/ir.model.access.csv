@@ -1,0 +1,17 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_receipt_manager,Receipt - Manager,model_stocksense_receipt,group_inventory_manager,1,1,1,1
+access_receipt_staff,Receipt - Staff,model_stocksense_receipt,group_warehouse_staff,1,0,0,0
+access_delivery_manager,Delivery - Manager,model_stocksense_delivery,group_inventory_manager,1,1,1,1
+access_delivery_staff,Delivery - Staff,model_stocksense_delivery,group_warehouse_staff,1,0,0,0
+access_transfer_manager,Transfer - Manager,model_stocksense_transfer,group_inventory_manager,1,1,1,1
+access_transfer_staff,Transfer - Staff,model_stocksense_transfer,group_warehouse_staff,1,1,1,0
+access_adjustment_manager,Adjustment - Manager,model_stocksense_adjustment,group_inventory_manager,1,1,1,1
+access_adjustment_staff,Adjustment - Staff,model_stocksense_adjustment,group_warehouse_staff,1,1,1,0
+access_ledger_manager,Ledger - Manager,model_stocksense_ledger,group_inventory_manager,1,0,0,0
+access_ledger_staff,Ledger - Staff,model_stocksense_ledger,group_warehouse_staff,1,0,0,0
+access_receipt_line_manager,Receipt Line - Manager,model_stocksense_receipt_line,group_inventory_manager,1,1,1,1
+access_delivery_line_manager,Delivery Line - Manager,model_stocksense_delivery_line,group_inventory_manager,1,1,1,1
+access_transfer_line_manager,Transfer Line - Manager,model_stocksense_transfer_line,group_inventory_manager,1,1,1,1
+access_adjustment_line_manager,Adjustment Line - Manager,model_stocksense_adjustment_line,group_inventory_manager,1,1,1,1
+access_product_category_manager,Product Category - Manager,model_stocksense_product_category,group_inventory_manager,1,1,1,1
+access_product_category_staff,Product Category - Staff,model_stocksense_product_category,group_warehouse_staff,1,0,0,0

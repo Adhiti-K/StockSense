@@ -1,0 +1,102 @@
+<odoo>
+<data>
+<!--  Ledger Tree View  -->
+<record id="ledger_tree" model="ir.ui.view">
+<field name="name">Stock Ledger Tree</field>
+<field name="model">stocksense.ledger</field>
+<field name="arch" type="xml">
+<tree string="Stock Movements">
+<field name="movement_date"/>
+<field name="product_id"/>
+<field name="sku"/>
+<field name="movement_type" widget="badge"/>
+<field name="quantity"/>
+<field name="source_location_id"/>
+<field name="destination_location_id"/>
+<field name="reference_doc"/>
+<field name="balance"/>
+</tree>
+</field>
+</record>
+<!--  Ledger Form View  -->
+<record id="ledger_form" model="ir.ui.view">
+<field name="name">Stock Ledger Form</field>
+<field name="model">stocksense.ledger</field>
+<field name="arch" type="xml">
+<form string="Stock Movement">
+<sheet>
+<group>
+<group string="Movement Details">
+<field name="movement_date"/>
+<field name="product_id"/>
+<field name="sku"/>
+<field name="movement_type" widget="badge"/>
+</group>
+<group string="Quantity">
+<field name="quantity"/>
+<field name="balance" readonly="1"/>
+</group>
+</group>
+<group>
+<group string="Source">
+<field name="source_location_id"/>
+</group>
+<group string="Destination">
+<field name="destination_location_id"/>
+</group>
+</group>
+<group>
+<field name="reference_doc" readonly="1"/>
+<field name="user_id" readonly="1"/>
+</group>
+<field name="notes" readonly="1"/>
+</sheet>
+</form>
+</field>
+</record>
+<!--  Ledger Search View  -->
+<record id="ledger_search" model="ir.ui.view">
+<field name="name">Stock Ledger Search</field>
+<field name="model">stocksense.ledger</field>
+<field name="arch" type="xml">
+<search string="Stock Movements">
+<field name="product_id"/>
+<field name="sku" string="SKU"/>
+<field name="source_location_id"/>
+<field name="destination_location_id"/>
+<field name="reference_doc" string="Reference"/>
+<separator/>
+<filter string="Receipt" name="receipt" domain="[('movement_type', '=', 'receipt')]"/>
+<filter string="Delivery" name="delivery" domain="[('movement_type', '=', 'delivery')]"/>
+<filter string="Internal Transfer" name="transfer" domain="[('movement_type', '=', 'internal_transfer')]"/>
+<filter string="Adjustment" name="adjustment" domain="[('movement_type', '=', 'adjustment')]"/>
+<separator/>
+<filter string="Today" name="today" domain="[('movement_date', '>=', context_today().strftime('%Y-%m-%d')), ('movement_date', '<', (context_today() + timedelta(days=1)).strftime('%Y-%m-%d'))]"/>
+<filter string="This Week" name="week" domain="[('movement_date', '>=', (context_today() - timedelta(days=context_today().weekday())).strftime('%Y-%m-%d'))]"/>
+<filter string="This Month" name="month" domain="[('movement_date', '>=', context_today().strftime('%Y-%m-01'))]"/>
+<group expand="0" string="Group By">
+<filter string="Product" name="product" context="{'group_by': 'product_id'}"/>
+<filter string="Movement Type" name="type" context="{'group_by': 'movement_type'}"/>
+<filter string="Date" name="date" context="{'group_by': 'movement_date'}"/>
+<filter string="Source Location" name="source" context="{'group_by': 'source_location_id'}"/>
+</group>
+</search>
+</field>
+</record>
+<!--  Ledger Summary Tree View  -->
+<record id="ledger_summary_tree" model="ir.ui.view">
+<field name="name">Stock Ledger Summary Tree</field>
+<field name="model">stocksense.ledger.summary</field>
+<field name="arch" type="xml">
+<tree string="Stock Summary">
+<field name="product_id"/>
+<field name="total_received"/>
+<field name="total_delivered"/>
+<field name="total_transferred"/>
+<field name="total_adjustments"/>
+<field name="net_movement"/>
+</tree>
+</field>
+</record>
+</data>
+</odoo>

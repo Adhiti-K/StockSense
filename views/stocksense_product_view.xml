@@ -1,0 +1,146 @@
+<odoo>
+<data>
+<!--  Product Form View  -->
+<record id="product_form_stocksense" model="ir.ui.view">
+<field name="name">Product Form - StockSense</field>
+<field name="model">product.product</field>
+<field name="priority">20</field>
+<field name="arch" type="xml">
+<form string="Product">
+<sheet>
+<div class="oe_button_box" name="button_box">
+<button type="action" name="action_open_quants" class="oe_stat_button" icon="fa-cubes">
+<field string="On Hand" name="qty_available" widget="statinfo"/>
+</button>
+</div>
+<div class="oe_title">
+<label for="name"/>
+<h1>
+<field name="name" placeholder="Product Name"/>
+</h1>
+</div>
+<group>
+<group>
+<field name="default_code" string="Internal Reference"/>
+<field name="stocksense_sku" string="SKU Code"/>
+<field name="barcode"/>
+<field name="type"/>
+</group>
+<group>
+<field name="stocksense_category_id"/>
+<field name="categ_id" string="Category"/>
+<field name="uom_id" string="Unit of Measure"/>
+</group>
+</group>
+<notebook>
+<page string="Inventory">
+<group>
+<group string="Stock Information">
+<field name="qty_available" string="Quantity On Hand" readonly="1"/>
+<field name="stock_status" readonly="1" widget="badge"/>
+<field name="virtual_available" string="Forecasted Quantity" readonly="1"/>
+</group>
+<group string="Reordering">
+<field name="reorder_point"/>
+<field name="reorder_qty"/>
+</group>
+</group>
+</page>
+<page string="Pricing">
+<group>
+<field name="list_price" string="Sales Price"/>
+<field name="standard_price" string="Cost"/>
+</group>
+</page>
+</notebook>
+</sheet>
+</form>
+</field>
+</record>
+<!--  Product Tree View  -->
+<record id="product_tree_stocksense" model="ir.ui.view">
+<field name="name">Product Tree - StockSense</field>
+<field name="model">product.product</field>
+<field name="priority">20</field>
+<field name="arch" type="xml">
+<tree string="Products">
+<field name="default_code"/>
+<field name="name"/>
+<field name="stocksense_sku"/>
+<field name="stocksense_category_id"/>
+<field name="qty_available"/>
+<field name="stock_status" widget="badge"/>
+<field name="uom_id"/>
+</tree>
+</field>
+</record>
+<!--  Product Search View  -->
+<record id="product_search_stocksense" model="ir.ui.view">
+<field name="name">Product Search - StockSense</field>
+<field name="model">product.product</field>
+<field name="priority">20</field>
+<field name="arch" type="xml">
+<search string="Products">
+<field name="name" string="Product Name"/>
+<field name="stocksense_sku" string="SKU"/>
+<field name="default_code" string="Reference"/>
+<separator/>
+<filter string="In Stock" name="in_stock" domain="[('qty_available', '>', 0)]"/>
+<filter string="Low Stock" name="low_stock" domain="[('stock_status', '=', 'low')]"/>
+<filter string="Out of Stock" name="out_of_stock" domain="[('stock_status', '=', 'unavailable')]"/>
+<separator/>
+<filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+<group expand="0" string="Group By">
+<filter string="Category" name="category" context="{'group_by': 'stocksense_category_id'}"/>
+<filter string="Stock Status" name="status" context="{'group_by': 'stock_status'}"/>
+</group>
+</search>
+</field>
+</record>
+<!--  Product Category Form  -->
+<record id="product_category_form" model="ir.ui.view">
+<field name="name">Product Category Form</field>
+<field name="model">stocksense.product.category</field>
+<field name="arch" type="xml">
+<form string="Product Category">
+<sheet>
+<group>
+<field name="name"/>
+<field name="description"/>
+</group>
+<separator string="Products"/>
+<field name="product_ids" mode="tree">
+<tree>
+<field name="name"/>
+<field name="stocksense_sku"/>
+<field name="qty_available"/>
+</tree>
+</field>
+</sheet>
+</form>
+</field>
+</record>
+<!--  Product Category Tree  -->
+<record id="product_category_tree" model="ir.ui.view">
+<field name="name">Product Category Tree</field>
+<field name="model">stocksense.product.category</field>
+<field name="arch" type="xml">
+<tree string="Product Categories">
+<field name="name"/>
+<field name="description"/>
+</tree>
+</field>
+</record>
+<!--  Product Category Search  -->
+<record id="product_category_search" model="ir.ui.view">
+<field name="name">Product Category Search</field>
+<field name="model">stocksense.product.category</field>
+<field name="arch" type="xml">
+<search string="Product Categories">
+<field name="name"/>
+<field name="description"/>
+</search>
+</field>
+</record>
+</data>
+</odoo>

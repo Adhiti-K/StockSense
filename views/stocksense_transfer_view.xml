@@ -1,0 +1,120 @@
+<odoo>
+<data>
+<!--  Transfer Form View  -->
+<record id="transfer_form" model="ir.ui.view">
+<field name="name">Transfer Form</field>
+<field name="model">stocksense.transfer</field>
+<field name="arch" type="xml">
+<form string="Internal Stock Transfer">
+<header>
+<button name="action_confirm" string="Confirm" type="object" class="oe_highlight" states="draft"/>
+<button name="action_start" string="Start Transfer" type="object" class="oe_highlight" states="confirmed"/>
+<button name="action_done" string="Complete" type="object" class="oe_highlight" states="in_transit"/>
+<button name="action_cancel" string="Cancel" type="object" states="draft,confirmed,in_transit"/>
+<button name="action_reset" string="Reset to Draft" type="object" states="canceled"/>
+<field name="state" widget="statusbar" statusbar_visible="draft,confirmed,in_transit,done"/>
+</header>
+<sheet>
+<div class="oe_title">
+<h1>
+<field name="name" readonly="1"/>
+</h1>
+</div>
+<group>
+<group string="Source">
+<field name="source_warehouse_id"/>
+<field name="source_location_id"/>
+</group>
+<group string="Destination">
+<field name="destination_warehouse_id"/>
+<field name="destination_location_id"/>
+</group>
+</group>
+<group>
+<field name="transfer_date"/>
+<field name="user_id" readonly="1"/>
+<field name="total_items" readonly="1"/>
+</group>
+<notebook>
+<page string="Transfer Lines">
+<field name="transfer_line_ids" mode="tree,form">
+<tree>
+<field name="product_id"/>
+<field name="quantity"/>
+<field name="uom_id"/>
+</tree>
+<form>
+<group>
+<field name="product_id"/>
+<field name="quantity"/>
+<field name="uom_id"/>
+<field name="notes"/>
+</group>
+</form>
+</field>
+</page>
+<page string="Notes">
+<field name="notes" placeholder="Transfer notes..."/>
+</page>
+</notebook>
+</sheet>
+</form>
+</field>
+</record>
+<!--  Transfer Tree View  -->
+<record id="transfer_tree" model="ir.ui.view">
+<field name="name">Transfer Tree</field>
+<field name="model">stocksense.transfer</field>
+<field name="arch" type="xml">
+<tree string="Internal Transfers">
+<field name="name"/>
+<field name="transfer_date"/>
+<field name="source_location_id"/>
+<field name="destination_location_id"/>
+<field name="total_items"/>
+<field name="state" widget="badge"/>
+</tree>
+</field>
+</record>
+<!--  Transfer Search View  -->
+<record id="transfer_search" model="ir.ui.view">
+<field name="name">Transfer Search</field>
+<field name="model">stocksense.transfer</field>
+<field name="arch" type="xml">
+<search string="Internal Transfers">
+<field name="name" string="Transfer Number"/>
+<field name="source_location_id"/>
+<field name="destination_location_id"/>
+<separator/>
+<filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+<filter string="Confirmed" name="confirmed" domain="[('state', '=', 'confirmed')]"/>
+<filter string="In Transit" name="in_transit" domain="[('state', '=', 'in_transit')]"/>
+<filter string="Done" name="done" domain="[('state', '=', 'done')]"/>
+<filter string="Canceled" name="canceled" domain="[('state', '=', 'canceled')]"/>
+<separator/>
+<filter string="Today" name="today" domain="[('transfer_date', '>=', context_today().strftime('%Y-%m-%d')), ('transfer_date', '<', (context_today() + timedelta(days=1)).strftime('%Y-%m-%d'))]"/>
+<group expand="0" string="Group By">
+<filter string="State" name="state" context="{'group_by': 'state'}"/>
+<filter string="Source Location" name="source" context="{'group_by': 'source_location_id'}"/>
+<filter string="Destination Location" name="dest" context="{'group_by': 'destination_location_id'}"/>
+</group>
+</search>
+</field>
+</record>
+<!--  Transfer Line Form  -->
+<record id="transfer_line_form" model="ir.ui.view">
+<field name="name">Transfer Line Form</field>
+<field name="model">stocksense.transfer.line</field>
+<field name="arch" type="xml">
+<form string="Transfer Line">
+<group>
+<field name="product_id"/>
+<field name="quantity"/>
+<field name="uom_id"/>
+<field name="notes" placeholder="Notes..."/>
+</group>
+</form>
+</field>
+</record>
+</data>
+</odoo>
