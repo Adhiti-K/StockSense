@@ -1,0 +1,33 @@
+<odoo>
+<data noupdate="0">
+<!--  Sequences for document numbering  -->
+<record id="seq_receipt" model="ir.sequence">
+<field name="name">Receipt Sequence</field>
+<field name="code">stocksense.receipt</field>
+<field name="prefix">RCP/%(year)s/</field>
+<field name="padding">5</field>
+<field name="number_next">1</field>
+</record>
+<record id="seq_delivery" model="ir.sequence">
+<field name="name">Delivery Sequence</field>
+<field name="code">stocksense.delivery</field>
+<field name="prefix">DLV/%(year)s/</field>
+<field name="padding">5</field>
+<field name="number_next">1</field>
+</record>
+<record id="seq_transfer" model="ir.sequence">
+<field name="name">Transfer Sequence</field>
+<field name="code">stocksense.transfer</field>
+<field name="prefix">TRF/%(year)s/</field>
+<field name="padding">5</field>
+<field name="number_next">1</field>
+</record>
+<record id="seq_adjustment" model="ir.sequence">
+<field name="name">Adjustment Sequence</field>
+<field name="code">stocksense.adjustment</field>
+<field name="prefix">ADJ/%(year)s/</field>
+<field name="padding">5</field>
+<field name="number_next">1</field>
+</record>
+</data>
+</odoo>

@@ -1,0 +1,137 @@
+<odoo>
+<data>
+<!--  Demo Product Categories  -->
+<record id="category_raw_materials" model="stocksense.product.category">
+<field name="name">Raw Materials</field>
+<field name="description">Raw materials and components</field>
+</record>
+<record id="category_office_equipment" model="stocksense.product.category">
+<field name="name">Office Equipment</field>
+<field name="description">Office furniture and supplies</field>
+</record>
+<record id="category_electronics" model="stocksense.product.category">
+<field name="name">Electronics</field>
+<field name="description">Electronic devices and components</field>
+</record>
+<record id="category_safety_equipment" model="stocksense.product.category">
+<field name="name">Safety Equipment</field>
+<field name="description">Safety gear and protective equipment</field>
+</record>
+<!--  Demo Products  -->
+<record id="product_steel_rods" model="product.product">
+<field name="name">Steel Rods</field>
+<field name="default_code">SR-001</field>
+<field name="stocksense_sku">SR-001</field>
+<field name="stocksense_category_id" ref="category_raw_materials"/>
+<field name="list_price">250.00</field>
+<field name="standard_price">200.00</field>
+<field name="type">product</field>
+<field name="uom_id" ref="uom.product_uom_kgm"/>
+<field name="reorder_point">50</field>
+<field name="reorder_qty">100</field>
+</record>
+<record id="product_office_chairs" model="product.product">
+<field name="name">Office Chairs</field>
+<field name="default_code">OC-002</field>
+<field name="stocksense_sku">OC-002</field>
+<field name="stocksense_category_id" ref="category_office_equipment"/>
+<field name="list_price">350.00</field>
+<field name="standard_price">280.00</field>
+<field name="type">product</field>
+<field name="uom_id" ref="uom.product_uom_unit"/>
+<field name="reorder_point">10</field>
+<field name="reorder_qty">20</field>
+</record>
+<record id="product_laptops" model="product.product">
+<field name="name">Laptops</field>
+<field name="default_code">LT-003</field>
+<field name="stocksense_sku">LT-003</field>
+<field name="stocksense_category_id" ref="category_electronics"/>
+<field name="list_price">1200.00</field>
+<field name="standard_price">900.00</field>
+<field name="type">product</field>
+<field name="uom_id" ref="uom.product_uom_unit"/>
+<field name="reorder_point">5</field>
+<field name="reorder_qty">15</field>
+</record>
+<record id="product_printer_paper" model="product.product">
+<field name="name">Printer Paper (500 sheets)</field>
+<field name="default_code">PP-004</field>
+<field name="stocksense_sku">PP-004</field>
+<field name="stocksense_category_id" ref="category_office_equipment"/>
+<field name="list_price">4.50</field>
+<field name="standard_price">3.50</field>
+<field name="type">product</field>
+<field name="uom_id" ref="uom.product_uom_unit"/>
+<field name="reorder_point">20</field>
+<field name="reorder_qty">50</field>
+</record>
+<record id="product_safety_helmets" model="product.product">
+<field name="name">Safety Helmets</field>
+<field name="default_code">SH-005</field>
+<field name="stocksense_sku">SH-005</field>
+<field name="stocksense_category_id" ref="category_safety_equipment"/>
+<field name="list_price">65.00</field>
+<field name="standard_price">45.00</field>
+<field name="type">product</field>
+<field name="uom_id" ref="uom.product_uom_unit"/>
+<field name="reorder_point">15</field>
+<field name="reorder_qty">30</field>
+</record>
+<record id="product_electrical_cables" model="product.product">
+<field name="name">Electrical Cables (100m)</field>
+<field name="default_code">EC-006</field>
+<field name="stocksense_sku">EC-006</field>
+<field name="stocksense_category_id" ref="category_raw_materials"/>
+<field name="list_price">80.00</field>
+<field name="standard_price">60.00</field>
+<field name="type">product</field>
+<field name="uom_id" ref="uom.product_uom_unit"/>
+<field name="reorder_point">10</field>
+<field name="reorder_qty">25</field>
+</record>
+<!--  Demo Supplier  -->
+<record id="supplier_abc_corp" model="res.partner">
+<field name="name">ABC Corporation</field>
+<field name="supplier_rank">1</field>
+<field name="email">supplier@abccorp.com</field>
+<field name="phone">+1-555-0100</field>
+</record>
+<!--  Demo Customer  -->
+<record id="customer_xyz_ltd" model="res.partner">
+<field name="name">XYZ Limited</field>
+<field name="customer_rank">1</field>
+<field name="email">customer@xyzltd.com</field>
+<field name="phone">+1-555-0200</field>
+</record>
+<!--  Sequences for document numbering  -->
+<record id="seq_receipt" model="ir.sequence">
+<field name="name">Receipt Sequence</field>
+<field name="code">stocksense.receipt</field>
+<field name="prefix">RCP/</field>
+<field name="padding">5</field>
+<field name="number_next">1</field>
+</record>
+<record id="seq_delivery" model="ir.sequence">
+<field name="name">Delivery Sequence</field>
+<field name="code">stocksense.delivery</field>
+<field name="prefix">DLV/</field>
+<field name="padding">5</field>
+<field name="number_next">1</field>
+</record>
+<record id="seq_transfer" model="ir.sequence">
+<field name="name">Transfer Sequence</field>
+<field name="code">stocksense.transfer</field>
+<field name="prefix">TRF/</field>
+<field name="padding">5</field>
+<field name="number_next">1</field>
+</record>
+<record id="seq_adjustment" model="ir.sequence">
+<field name="name">Adjustment Sequence</field>
+<field name="code">stocksense.adjustment</field>
+<field name="prefix">ADJ/</field>
+<field name="padding">5</field>
+<field name="number_next">1</field>
+</record>
+</data>
+</odoo>
