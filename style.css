@@ -1,2 +1,933 @@
-< !DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>StockSense | Inventory Management</title><link rel="stylesheet" href="style.css"><script src="https://cdn.jsdelivr.net/npm/chart.js"></script></head><body><aside class="sidebar"><div class="brand"><div class="brand-icon">S</div><div><h2>StockSense</h2><span>Inventory Control</span></div></div><nav><button class="nav-item active" onclick="showPage('dashboard')">📊 Dashboard</button><button class="nav-item" onclick="showPage('products')">📦 Products</button><button class="nav-item" onclick="showPage('receipts')">📥 Receipts</button><button class="nav-item" onclick="showPage('deliveries')">📤 Deliveries</button><button class="nav-item" onclick="showPage('transfers')">🔄 Transfers</button><button class="nav-item" onclick="showPage('adjustments')">⚙️ Adjustments</button><button class="nav-item" onclick="showPage('ledger')">📋 Stock Ledger</button></nav><div class="sidebar-bottom"><div class="user"><div class="avatar">AK</div><div><strong>Inventory Manager</strong><small>StockSense Admin</small></div></div></div></aside><main class="main"><header class="topbar"><div><h1 id="pageTitle">Inventory Dashboard</h1><p>Monitor and manage your stock in one place.</p></div><div class="top-actions"><span class="status">● System Online</span><button class="icon-btn">🔔</button><div class="profile">AK</div></div></header>< !-- DASHBOARD --><section id="dashboard" class="page active-page"><div class="welcome"><div><h2>Good afternoon 👋</h2><p>Here's what' s happening with your inventory today.</p></div><button class="primary-btn" onclick="showPage('receipts')">＋ New Receipt</button></div><div class="stats-grid"><div class="stat-card"><div class="stat-icon blue">📦</div><div><span>Total Products</span><h2 id="totalProducts">128</h2><small>Across all categories</small></div></div><div class="stat-card"><div class="stat-icon green">✓</div><div><span>Available Stock</span><h2>96</h2><small>Products in stock</small></div></div><div class="stat-card"><div class="stat-icon yellow">⚠</div><div><span>Low Stock</span><h2>18</h2><small>Need attention</small></div></div><div class="stat-card"><div class="stat-icon red"> !</div><div><span>Out of Stock</span><h2>14</h2><small>Requires restocking</small></div></div></div><div class="dashboard-grid"><div class="panel chart-panel"><div class="panel-header"><div><h3>Stock Movement</h3><p>Receipts vs deliveries</p></div><select><option>Last 7 days</option><option>Last 30 days</option></select></div><canvas id="stockChart"></canvas></div><div class="panel"><div class="panel-header"><div><h3>Stock Alerts</h3><p>Products needing attention</p></div><button class="text-btn" onclick="showPage('products')">View all</button></div><div class="alert-list"><div class="alert-item"><span class="dot yellow-dot"></span><div><strong>Wireless Mouse</strong><small>Only 3 units remaining</small></div><span class="badge low">Low</span></div><div class="alert-item"><span class="dot red-dot"></span><div><strong>USB-C Hub</strong><small>0 units remaining</small></div><span class="badge out">Out</span></div><div class="alert-item"><span class="dot yellow-dot"></span><div><strong>Keyboard</strong><small>5 units remaining</small></div><span class="badge low">Low</span></div></div></div></div><div class="panel"><div class="panel-header"><div><h3>Recent Stock Movements</h3><p>Latest inventory activity</p></div><button class="text-btn" onclick="showPage('ledger')">View ledger →</button></div><table><thead><tr><th>Reference</th><th>Product</th><th>Type</th><th>Quantity</th><th>Date</th><th>Status</th></tr></thead><tbody><tr><td><strong>REC-00124</strong></td><td>Wireless Mouse</td><td><span class="badge receipt">Receipt</span></td><td>+25</td><td>26 Sep 2026</td><td><span class="badge done">Completed</span></td></tr><tr><td><strong>DEL-00087</strong></td><td>Mechanical Keyboard</td><td><span class="badge delivery">Delivery</span></td><td>-10</td><td>26 Sep 2026</td><td><span class="badge done">Completed</span></td></tr><tr><td><strong>TRF-00032</strong></td><td>USB-C Cable</td><td><span class="badge transfer">Transfer</span></td><td>20</td><td>25 Sep 2026</td><td><span class="badge done">Completed</span></td></tr></tbody></table></div></section>< !-- PRODUCTS --><section id="products" class="page"><div class="page-actions"><div><h2>Products</h2><p>Manage products,
-SKUs and stock levels.</p></div><button class="primary-btn" onclick="addProduct()">＋ Add Product</button></div><div class="toolbar"><input id="searchInput" type="text" placeholder="🔎 Search products or SKU..." onkeyup="searchProducts()"><select><option>All Categories</option><option>Electronics</option><option>Accessories</option></select><select><option>All Stock Status</option><option>Available</option><option>Low Stock</option><option>Out of Stock</option></select></div><div class="panel"><table id="productTable"><thead><tr><th>Product</th><th>SKU</th><th>Category</th><th>Stock</th><th>Status</th><th>Reorder Point</th></tr></thead><tbody><tr><td><strong>Wireless Mouse</strong></td><td>WM-1001</td><td>Accessories</td><td>3</td><td><span class="badge low">Low Stock</span></td><td>10</td></tr><tr><td><strong>Mechanical Keyboard</strong></td><td>KB-2045</td><td>Electronics</td><td>42</td><td><span class="badge available">Available</span></td><td>10</td></tr><tr><td><strong>USB-C Hub</strong></td><td>HC-3012</td><td>Accessories</td><td>0</td><td><span class="badge out">Out of Stock</span></td><td>8</td></tr><tr><td><strong>USB-C Cable</strong></td><td>UC-4021</td><td>Accessories</td><td>68</td><td><span class="badge available">Available</span></td><td>15</td></tr></tbody></table></div></section>< !-- RECEIPTS --><section id="receipts" class="page"><div class="page-actions"><div><h2>Stock Receipts</h2><p>Record incoming goods from suppliers.</p></div><button class="primary-btn" onclick="showToast('New receipt created')">＋ New Receipt</button></div><div class="panel"><table><thead><tr><th>Receipt No.</th><th>Supplier</th><th>Warehouse</th><th>Items</th><th>Date</th><th>Status</th></tr></thead><tbody><tr><td><strong>REC-00124</strong></td><td>TechSupply Ltd.</td><td>Main Warehouse</td><td>25</td><td>26 Sep 2026</td><td><span class="badge done">Done</span></td></tr><tr><td><strong>REC-00123</strong></td><td>Global Electronics</td><td>Main Warehouse</td><td>50</td><td>25 Sep 2026</td><td><span class="badge pending">Confirmed</span></td></tr></tbody></table></div></section>< !-- DELIVERIES --><section id="deliveries" class="page"><div class="page-actions"><div><h2>Stock Deliveries</h2><p>Track outgoing goods and customer deliveries.</p></div><button class="primary-btn" onclick="showToast('New delivery created')">＋ New Delivery</button></div><div class="panel"><table><thead><tr><th>Delivery No.</th><th>Customer</th><th>Warehouse</th><th>Items</th><th>Date</th><th>Status</th></tr></thead><tbody><tr><td><strong>DEL-00087</strong></td><td>ABC Retail</td><td>Main Warehouse</td><td>10</td><td>26 Sep 2026</td><td><span class="badge done">Done</span></td></tr><tr><td><strong>DEL-00086</strong></td><td>Smart Stores</td><td>Main Warehouse</td><td>18</td><td>25 Sep 2026</td><td><span class="badge pending">In Transit</span></td></tr></tbody></table></div></section>< !-- TRANSFERS --><section id="transfers" class="page"><div class="page-actions"><div><h2>Internal Transfers</h2><p>Move stock between warehouses and locations.</p></div><button class="primary-btn" onclick="showToast('New transfer created')">＋ New Transfer</button></div><div class="panel"><table><thead><tr><th>Transfer No.</th><th>Source</th><th>Destination</th><th>Items</th><th>Date</th><th>Status</th></tr></thead><tbody><tr><td><strong>TRF-00032</strong></td><td>Main Warehouse</td><td>Store Room</td><td>20</td><td>25 Sep 2026</td><td><span class="badge done">Done</span></td></tr><tr><td><strong>TRF-00031</strong></td><td>Store Room</td><td>Main Warehouse</td><td>15</td><td>24 Sep 2026</td><td><span class="badge pending">In Transit</span></td></tr></tbody></table></div></section>< !-- ADJUSTMENTS --><section id="adjustments" class="page"><div class="page-actions"><div><h2>Stock Adjustments</h2><p>Reconcile physical stock with recorded quantities.</p></div><button class="primary-btn" onclick="showToast('New adjustment created')">＋ New Adjustment</button></div><div class="panel"><table><thead><tr><th>Adjustment No.</th><th>Warehouse</th><th>Reason</th><th>Variance</th><th>Date</th><th>Status</th></tr></thead><tbody><tr><td><strong>ADJ-00019</strong></td><td>Main Warehouse</td><td>Count Variance</td><td>-3</td><td>26 Sep 2026</td><td><span class="badge done">Done</span></td></tr><tr><td><strong>ADJ-00018</strong></td><td>Store Room</td><td>Damage</td><td>-2</td><td>25 Sep 2026</td><td><span class="badge pending">Reviewed</span></td></tr></tbody></table></div></section>< !-- LEDGER --><section id="ledger" class="page"><div class="page-actions"><div><h2>Stock Movement Ledger</h2><p>Complete audit trail of inventory movements.</p></div><button class="secondary-btn" onclick="showToast('Ledger exported successfully')">↓ Export CSV</button></div><div class="panel"><table><thead><tr><th>Date</th><th>Reference</th><th>Product</th><th>Movement</th><th>Quantity</th><th>Balance</th></tr></thead><tbody><tr><td>26 Sep 2026</td><td>REC-00124</td><td>Wireless Mouse</td><td><span class="badge receipt">Receipt</span></td><td class="positive">+25</td><td>28</td></tr><tr><td>26 Sep 2026</td><td>DEL-00087</td><td>Mechanical Keyboard</td><td><span class="badge delivery">Delivery</span></td><td class="negative">-10</td><td>42</td></tr><tr><td>25 Sep 2026</td><td>TRF-00032</td><td>USB-C Cable</td><td><span class="badge transfer">Transfer</span></td><td>20</td><td>68</td></tr></tbody></table></div></section></main><div id="toast" class="toast"></div><script src="script.js"></script></body></html>
+:root {
+    --bg-main: #0b0f19;
+    --bg-sidebar: #0f172a;
+    --bg-card: #151c2c;
+    --bg-card-hover: #1e293b;
+    --primary: #6366f1;
+    --primary-hover: #4f46e5;
+    --primary-glow: rgba(99, 102, 241, 0.35);
+    --accent: #a855f7;
+    --accent-blue: #38bdf8;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --danger-hover: #dc2626;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border: #1e2d4a;
+    --border-light: rgba(255, 255, 255, 0.08);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* LOGIN SCREEN */
+.login-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at top right, rgba(124, 58, 237, 0.15), transparent 40%),
+                radial-gradient(circle at bottom left, rgba(99, 102, 241, 0.15), transparent 40%),
+                var(--bg-main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 1.5rem;
+}
+
+.login-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 420px;
+    padding: 2.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 30px rgba(99, 102, 241, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.login-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: center;
+}
+
+.login-brand-icon {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #fff;
+    box-shadow: 0 0 25px var(--primary-glow);
+}
+
+.login-brand h2 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, #fff, var(--text-muted));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.login-brand p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: var(--bg-main);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: #fff;
+    font-size: 0.95rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.login-btn {
+    width: 100%;
+    padding: 0.85rem;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px var(--primary-glow);
+    margin-top: 0.5rem;
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+}
+
+.demo-hint {
+    background: rgba(99, 102, 241, 0.08);
+    border: 1px dashed rgba(99, 102, 241, 0.3);
+    padding: 0.8rem;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.demo-hint strong {
+    color: var(--text-main);
+}
+
+.error-msg {
+    color: var(--danger);
+    font-size: 0.85rem;
+    display: none;
+    text-align: center;
+    background: rgba(239, 68, 68, 0.1);
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 260px;
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1rem;
+    position: fixed;
+    height: 100vh;
+    z-index: 50;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1.5rem;
+}
+
+.brand-icon {
+    width: 42px;
+    height: 42px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #fff;
+    box-shadow: 0 0 15px var(--primary-glow);
+}
+
+.brand h2 {
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+
+.brand span {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    flex: 1;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border: none;
+    border-radius: 10px;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+}
+
+.nav-item.active {
+    background: linear-gradient(90deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.05));
+    color: #fff;
+    border-left: 3px solid var(--primary);
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #fff;
+}
+
+.user div {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.user strong {
+    font-size: 0.85rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user small {
+    font-size: 0.73rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* MAIN CONTENT */
+.main {
+    margin-left: 260px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.topbar {
+    padding: 1.25rem 2.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 40;
+}
+
+.topbar h1 {
+    font-size: 1.4rem;
+    font-weight: 800;
+}
+
+.topbar p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.top-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+}
+
+.status {
+    font-size: 0.8rem;
+    color: var(--success);
+    font-weight: 600;
+    background: rgba(16, 185, 129, 0.1);
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.icon-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: background 0.2s;
+}
+
+.icon-btn:hover {
+    background: var(--bg-card-hover);
+}
+
+.profile-wrapper {
+    position: relative;
+}
+
+.profile {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 0 12px var(--primary-glow);
+    transition: transform 0.2s;
+}
+
+.profile:hover {
+    transform: scale(1.05);
+}
+
+/* PROFILE DROPDOWN MENU */
+.profile-menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    width: 240px;
+    padding: 1rem;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    display: none;
+    flex-direction: column;
+    gap: 0.75rem;
+    z-index: 100;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.profile-menu.show {
+    display: flex;
+}
+
+.profile-menu-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.profile-menu-info h4 {
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.profile-menu-info p {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.logout-btn {
+    width: 100%;
+    padding: 0.6rem;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    color: var(--danger);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+}
+
+.logout-btn:hover {
+    background: var(--danger);
+    color: #fff;
+}
+
+/* PAGES */
+.page {
+    display: none;
+    padding: 2rem 2.5rem;
+    flex-direction: column;
+    gap: 1.75rem;
+}
+
+.page.active-page {
+    display: flex;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.welcome {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(168, 85, 247, 0.05));
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    padding: 1.5rem 2rem;
+    border-radius: 16px;
+}
+
+.welcome h2 {
+    font-size: 1.35rem;
+    font-weight: 800;
+}
+
+.welcome p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+}
+
+.primary-btn {
+    background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+    border: none;
+    color: #fff;
+    padding: 0.65rem 1.25rem;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    box-shadow: 0 4px 14px var(--primary-glow);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+}
+
+.secondary-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    padding: 0.65rem 1.25rem;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.secondary-btn:hover {
+    background: var(--bg-card-hover);
+}
+
+/* STATS GRID */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+}
+
+.stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 1.25rem 1.5rem;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(99, 102, 241, 0.4);
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+}
+
+.stat-icon.blue { background: rgba(99, 102, 241, 0.15); color: var(--primary); }
+.stat-icon.green { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+.stat-icon.yellow { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
+.stat-icon.red { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+
+.stat-card span {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.stat-card h2 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin: 0.1rem 0;
+}
+
+.stat-card small {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* PANELS & TABLES */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+}
+
+.panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.panel-header h3 {
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.panel-header p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.panel-header select {
+    background: var(--bg-main);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.82rem;
+}
+
+.text-btn {
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.text-btn:hover {
+    text-decoration: underline;
+}
+
+.chart-panel {
+    min-height: 300px;
+}
+
+/* ALERT LIST */
+.alert-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.alert-item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.yellow-dot { background: var(--warning); box-shadow: 0 0 8px var(--warning); }
+.red-dot { background: var(--danger); box-shadow: 0 0 8px var(--danger); }
+
+.alert-item div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.alert-item strong {
+    font-size: 0.85rem;
+}
+
+.alert-item small {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* PAGE ACTIONS & TOOLBAR */
+.page-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.page-actions h2 {
+    font-size: 1.35rem;
+    font-weight: 800;
+}
+
+.page-actions p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.toolbar {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.toolbar input {
+    flex: 1;
+    padding: 0.65rem 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: #fff;
+    font-size: 0.88rem;
+}
+
+.toolbar input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.toolbar select {
+    padding: 0.65rem 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: #fff;
+    font-size: 0.88rem;
+}
+
+/* TABLES */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.88rem;
+}
+
+th {
+    padding: 0.85rem 1rem;
+    color: var(--text-muted);
+    font-weight: 700;
+    border-bottom: 1px solid var(--border);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+}
+
+td {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* BADGES */
+.badge {
+    padding: 0.25rem 0.65rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: inline-block;
+}
+
+.badge.available, .badge.done, .badge.receipt {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.badge.low, .badge.pending, .badge.transfer {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.badge.out, .badge.delivery {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.positive { color: #34d399; font-weight: 700; }
+.negative { color: #f87171; font-weight: 700; }
+
+/* DELETE BUTTON */
+.delete-btn {
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #f87171;
+    padding: 0.35rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.delete-btn:hover {
+    background: var(--danger);
+    color: #fff;
+    border-color: var(--danger);
+    transform: scale(1.03);
+}
+
+/* CONFIRM MODAL */
+.confirm-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(6px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.confirm-overlay.active {
+    display: flex;
+}
+
+.confirm-modal {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    width: 420px;
+    max-width: 90%;
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    animation: fadeIn 0.2s ease-out;
+}
+
+.confirm-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--danger);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 0.25rem;
+}
+
+.confirm-title h3 {
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.confirm-title p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-top: 0.35rem;
+}
+
+.confirm-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+}
+
+.cancel-btn {
+    background: var(--bg-main);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    cursor: pointer;
+}
+
+.confirm-delete-btn {
+    background: var(--danger);
+    border: none;
+    color: #fff;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+.confirm-delete-btn:hover {
+    background: var(--danger-hover);
+}
+
+/* TOAST */
+.toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    padding: 0.85rem 1.4rem;
+    border-radius: 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--primary);
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 700;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    gap: 0.65rem;
+    z-index: 10001;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
